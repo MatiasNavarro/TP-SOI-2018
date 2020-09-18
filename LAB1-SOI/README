@@ -1,0 +1,102 @@
+Autores: - FISSORE, Lorenzo
+		 - NAVARRO, Matias Alejandro 
+
+
+SISTEMAS OPERATIVOS I 
+
+Trabajo Practico de Laboratorio Nº1: 
+"Observando el comportamiento de Linux"
+
+
+Objetivos: 
+Iniciar los laboratorios con un proyecto sencillo, donde se muestre como a través del 
+sistema de archivos virtual ​ /proc ​ de Linux, podemos inspeccionar información interna 
+del kernel. Se deberá generar la utilidad ​ ksamp ​ que muestra de diversas formas algún 
+subconjunto de la información disponible en ​ /proc​.
+
+
+############################################ PARTE A ############################################
+El sistema de archivos /proc contiene un sistema de archivos imaginario o virtual. El
+mismo no existe físicamente en nuestro disco duro, si no que el kernel lo crea en la
+memoria. Se utiliza para obtener información sobre el sistema. 
+Luego de buscar y leer información sobre el directorio /proc podemos identificar los
+archivos/comandos de los cuales se pueden obtener los datos requeridos:
+
+- Tipo y modelo del CPU 		/proc/cpuinfo
+
+- Versión actual del kernel		/proc/version_signature
+
+- Tiempo desde que se inició	/proc/uptime
+  el sistema 
+  
+- Tiempo de CPU que ha sido		/proc/stat
+  empleado
+  
+- Memoria total y disponible	/proc/meminfo
+
+- Sistemas de archivos que		/proc/filesystem
+  soporta el kernel
+  
+- Cantidad de pedidos de		/proc/diskstats 
+  lectura/escritura
+  
+- Procesos creados desde que
+  se inicio el sistema 			/proc/stat
+  
+  
+  
+############################################ PARTE B ############################################
+La versión inicial del ksamp, imprimirá en pantalla de forma ordenada por stdout la 
+siguiete información:
+
+- Una cabecera que indicará el nombre del computador, fecha y hora actual.
+ 
+- Tipo y modelo del CPU 		/proc/cpuinfo  
+  
+- Versión actual del kernel		/proc/version_signature
+
+- Cantidad de tiempo transcurrido desde que se inició el sistema operativo.
+  Desde /proc/uptime.
+ 
+Se desarrollaron las siguiente funciones:
+1. fopen() : abre el archivo que contiene la información
+2. fgets(), parser(), strstr(), sscanf() : para obtener los distintos datos
+3. fclose(): cierra el archivo
+4. printf(): imprime la información de manera ordenada.
+
+
+
+############################################ PARTE C ############################################
+
+La segunda versión de ksamp, imprimirá la misma información que la versión anterior
+y en caso de invocarse con la opción -s, agregará la siguiente información:
+
+- Cantidad de tiempo de CPU utilizado para usuarios, sistema y proceso idle.
+- Cantidad de cambios de contexto.
+- Fecha y hora cuando el sistema fue iniciado.
+- Número de procesos creados desde el inicio del sistema.
+
+Para leer los argumentos de entrada e interpretarlos se hará uso de las variables int argc 
+y char *argv[]. La primera indica cuantos argumentos se pasaron y argv es el 
+arreglo de tamaño argc con cada uno de las cadenas de los argumentos.
+Utilizaremos getopt() de la librería C, para establecer distintos comportamientos en 
+el programa según las opciones invocadas.
+
+
+
+############################################ PARTE D ############################################
+
+La tercera parte involucra imprimir todo lo de las versiones anteriores, pero cuando 
+se invoca con la opción -l [intervalo tiempo] imprime además:
+
+- Número de peticiones a disco realizadas.
+- Cantidad de memoria configurada en el hardware.
+- Cantidad de memoria disponible.
+- Lista de los promedios de carga de 1 minuto.
+
+Así por ejemplo ksamp -l 2 100 mostrará el promedio de carga de 1 minuto por 100 segúndos
+tomando muestras en intervalos de 2 segundos. El comando ksamp -l a b, lee los datos
+indicados arriba (peticiones de disco, cantidades de memoria, promedios de carga) de /proc,
+y los imprime repetidamente cada a segundos; esto se repite hasta que hayan pasado b
+segundos.
+
